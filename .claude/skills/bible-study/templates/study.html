@@ -692,13 +692,53 @@
       return text;
     }
 
+    // ── Copy notes to clipboard ──
+    async function copyNotesToClipboard(text) {
+      try {
+        await navigator.clipboard.writeText(text);
+        return true;
+      } catch(e) {
+        // Fallback for older browsers
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.focus();
+        ta.select();
+        const ok = document.execCommand('copy');
+        document.body.removeChild(ta);
+        return ok;
+      }
+    }
+
+    // ── Brief confirmation flash on a button ──
+    function flashButton(btn, message, duration) {
+      const original = btn.textContent;
+      btn.textContent = message;
+      setTimeout(() => { btn.textContent = original; }, duration || 2000);
+    }
+
     // ── Email to Self ──
-    document.getElementById('emailBtn').addEventListener('click', () => {
+    // Copy full notes to clipboard first, then open mailto with just the
+    // subject. This avoids the ~2000-char mailto body limit that silently
+    // truncates notes on mobile Safari.
+    document.getElementById('emailBtn').addEventListener('click', async () => {
       const title = document.querySelector('.study-header h1')?.textContent || 'Bible Study';
       const body = gatherStudyWithNotes();
-      const subject = encodeURIComponent('My Notes — ' + title);
-      const mailBody = encodeURIComponent(body);
-      window.location.href = 'mailto:?subject=' + subject + '&body=' + mailBody;
+      const subject = encodeURIComponent('My Notes \u2014 ' + title);
+
+      const copied = await copyNotesToClipboard(body);
+
+      if (copied) {
+        flashButton(document.getElementById('emailBtn'), 'Copied! Paste in email\u2026', 3000);
+        setTimeout(() => {
+          window.location.href = 'mailto:?subject=' + subject + '&body=' + encodeURIComponent('(Your notes are on the clipboard \u2014 paste here)');
+        }, 600);
+      } else {
+        const mailBody = encodeURIComponent(body);
+        window.location.href = 'mailto:?subject=' + subject + '&body=' + mailBody;
+      }
     });
 
     // ── Web Share API ──
@@ -714,10 +754,14 @@
 
       if (navigator.share) {
         try {
-          await navigator.share({ title: 'My Notes — ' + title, text: text });
+          await navigator.share({ title: 'My Notes \u2014 ' + title, text: text });
         } catch(e) {
-          // User cancelled or share failed — no action needed
+          const copied = await copyNotesToClipboard(text);
+          if (copied) flashButton(shareBtn, 'Copied!', 2000);
         }
+      } else {
+        const copied = await copyNotesToClipboard(text);
+        if (copied) flashButton(shareBtn, 'Copied!', 2000);
       }
     });
 

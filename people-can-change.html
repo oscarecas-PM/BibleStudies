@@ -664,6 +664,15 @@
         </li>
       </ol>
     </div>
+
+    <div class="discussion">
+      <ol start="8">
+        <li>
+          <span class="question-text">Now look forward: what changes do you expect — or hope for — in yourself over the next 3–5 years? Write it down. Be specific.</span>
+          <textarea class="note-field" placeholder="Your thoughts..." data-question="8"></textarea>
+        </li>
+      </ol>
+    </div>
   </section>
 
   <!-- Challenge -->
@@ -671,6 +680,7 @@
     <div class="challenge">
       <h3>This Week</h3>
       <p>Pick one item from Colossians 3:12–15 — compassion, kindness, humility, gentleness, patience, forgiveness, love — and focus on putting it on deliberately each morning this week. At the end of the week, notice what changed.</p>
+      <p style="margin-top: 0.8rem;">Then do this: <strong>set a calendar reminder for March 2029</strong> with the subject "People Can Change — revisit." When it fires, come back to your answer to Question 8 and see what God has done.</p>
     </div>
   </section>
 
@@ -790,13 +800,55 @@
       return text;
     }
 
+    // ── Copy notes to clipboard (works on iPad Safari) ──
+    async function copyNotesToClipboard(text) {
+      try {
+        await navigator.clipboard.writeText(text);
+        return true;
+      } catch(e) {
+        // Fallback for older browsers
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.focus();
+        ta.select();
+        const ok = document.execCommand('copy');
+        document.body.removeChild(ta);
+        return ok;
+      }
+    }
+
+    // ── Brief confirmation flash on a button ──
+    function flashButton(btn, message, duration) {
+      const original = btn.textContent;
+      btn.textContent = message;
+      setTimeout(() => { btn.textContent = original; }, duration || 2000);
+    }
+
     // ── Email to Self ──
-    document.getElementById('emailBtn').addEventListener('click', () => {
+    // Strategy: copy full notes to clipboard first, then open mailto with
+    // just the subject line. This avoids the ~2000-char mailto body limit
+    // that silently truncates notes on mobile Safari.
+    document.getElementById('emailBtn').addEventListener('click', async () => {
       const title = document.querySelector('.study-header h1')?.textContent || 'Bible Study';
       const body = gatherStudyWithNotes();
-      const subject = encodeURIComponent('My Notes — ' + title);
-      const mailBody = encodeURIComponent(body);
-      window.location.href = 'mailto:?subject=' + subject + '&body=' + mailBody;
+      const subject = encodeURIComponent('My Notes \u2014 ' + title);
+
+      const copied = await copyNotesToClipboard(body);
+
+      if (copied) {
+        flashButton(document.getElementById('emailBtn'), 'Copied! Paste in email\u2026', 3000);
+        // Short delay so the user sees the confirmation before the mail client opens
+        setTimeout(() => {
+          window.location.href = 'mailto:?subject=' + subject + '&body=' + encodeURIComponent('(Your notes are on the clipboard \u2014 paste here)');
+        }, 600);
+      } else {
+        // Clipboard failed — fall back to mailto with as much body as we can
+        const mailBody = encodeURIComponent(body);
+        window.location.href = 'mailto:?subject=' + subject + '&body=' + mailBody;
+      }
     });
 
     // ── Web Share API ──
@@ -812,8 +864,16 @@
 
       if (navigator.share) {
         try {
-          await navigator.share({ title: 'My Notes — ' + title, text: text });
-        } catch(e) {}
+          await navigator.share({ title: 'My Notes \u2014 ' + title, text: text });
+        } catch(e) {
+          // User cancelled or share failed — copy to clipboard as fallback
+          const copied = await copyNotesToClipboard(text);
+          if (copied) flashButton(shareBtn, 'Copied!', 2000);
+        }
+      } else {
+        // No share API — just copy to clipboard
+        const copied = await copyNotesToClipboard(text);
+        if (copied) flashButton(shareBtn, 'Copied!', 2000);
       }
     });
 
