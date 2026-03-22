@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{TITLE}}</title>
+  <style>
+    /* Reset */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* Typography & Layout */
+    body {
+      font-family: 'Georgia', 'Times New Roman', serif;
+      line-height: 1.7;
+      color: #2c2c2c;
+      background: #fafaf7;
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 4rem;
+    }
+
+    /* Header */
+    .study-header {
+      text-align: center;
+      margin-bottom: 3rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid #d4d0c8;
+    }
+
+    .study-header h1 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #1a1a1a;
+      margin-bottom: 0.4rem;
+    }
+
+    .study-header .subtitle {
+      font-size: 1.05rem;
+      font-style: italic;
+      color: #5a5a5a;
+      margin-bottom: 1.5rem;
+    }
+
+    .epigraph {
+      font-style: italic;
+      color: #4a4a4a;
+      margin: 1.5rem auto;
+      max-width: 480px;
+      font-size: 0.95rem;
+    }
+
+    .epigraph cite {
+      display: block;
+      font-style: normal;
+      font-size: 0.85rem;
+      color: #777;
+      margin-top: 0.3rem;
+    }
+
+    .study-intro {
+      font-size: 0.95rem;
+      color: #444;
+      text-align: left;
+      margin-top: 1.5rem;
+    }
+
+    .study-meta {
+      font-size: 0.82rem;
+      color: #888;
+      margin-top: 1rem;
+      font-style: italic;
+    }
+
+    /* Sections */
+    .study-section {
+      margin: 2.5rem 0;
+      padding-top: 2rem;
+      border-top: 1px solid #e0ddd5;
+    }
+
+    .study-section h2 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin-bottom: 1.2rem;
+    }
+
+    .study-section h3 {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: #333;
+      margin: 1.5rem 0 0.6rem;
+    }
+
+    /* Body text */
+    p {
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+    }
+
+    /* Scripture blocks */
+    blockquote {
+      border-left: 3px solid #b8a88a;
+      margin: 1.2rem 0;
+      padding: 0.8rem 1.2rem;
+      background: #f5f3ee;
+      font-size: 0.92rem;
+    }
+
+    blockquote .scripture-ref {
+      display: block;
+      font-weight: 700;
+      font-size: 0.85rem;
+      color: #6b5d4f;
+      margin-bottom: 0.4rem;
+    }
+
+    /* Discussion questions */
+    .discussion {
+      margin: 1.5rem 0;
+    }
+
+    .discussion h3 {
+      font-size: 0.95rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #6b5d4f;
+      margin-bottom: 0.8rem;
+    }
+
+    .discussion ol {
+      padding-left: 1.4rem;
+    }
+
+    .discussion li {
+      margin-bottom: 0.8rem;
+      font-size: 0.93rem;
+      line-height: 1.6;
+    }
+
+    /* Challenge / interactive element */
+    .challenge {
+      margin: 1.5rem 0;
+      padding: 1rem 1.2rem;
+      background: #eef0e8;
+      border-radius: 6px;
+      border-left: 3px solid #7a8b5c;
+    }
+
+    .challenge h3 {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #5a6b42;
+      margin-bottom: 0.5rem;
+    }
+
+    .challenge p {
+      font-size: 0.93rem;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Closing */
+    .study-closing {
+      margin-top: 2.5rem;
+      padding-top: 2rem;
+      border-top: 1px solid #e0ddd5;
+      font-style: italic;
+      color: #555;
+      font-size: 0.93rem;
+    }
+
+    /* Footer */
+    .study-footer {
+      margin-top: 3rem;
+      padding-top: 1rem;
+      border-top: 1px solid #d4d0c8;
+      font-size: 0.8rem;
+      color: #999;
+      text-align: center;
+    }
+
+    /* Print styles */
+    @media print {
+      body {
+        background: white;
+        max-width: none;
+        padding: 0.5in;
+        font-size: 11pt;
+      }
+
+      .study-section {
+        page-break-inside: avoid;
+      }
+
+      blockquote {
+        background: none;
+        border-left-color: #999;
+      }
+
+      .challenge {
+        background: none;
+        border: 1px solid #ccc;
+      }
+    }
+
+    /* Mobile */
+    @media (max-width: 600px) {
+      body {
+        padding: 1.2rem 1rem 3rem;
+      }
+
+      .study-header h1 {
+        font-size: 1.3rem;
+      }
+
+      blockquote {
+        padding: 0.6rem 0.8rem;
+        margin-left: 0;
+        margin-right: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="study-header">
+    <h1>{{TITLE}}</h1>
+    <div class="subtitle">{{SUBTITLE}}</div>
+
+    <div class="epigraph">
+      {{EPIGRAPH_TEXT}}
+      <cite>{{EPIGRAPH_REF}}</cite>
+    </div>
+
+    <div class="study-intro">
+      {{INTRO}}
+    </div>
+
+    <div class="study-meta">
+      {{META}}
+    </div>
+  </header>
+
+  <!-- Repeat this block for each section of the study -->
+  <section class="study-section">
+    <h2>{{SECTION_TITLE}}</h2>
+
+    <!-- Exposition with embedded scripture -->
+    <p>{{EXPOSITION}}</p>
+
+    <blockquote>
+      <span class="scripture-ref">{{SCRIPTURE_REF}}</span>
+      {{SCRIPTURE_TEXT}}
+    </blockquote>
+
+    <p>{{MORE_EXPOSITION}}</p>
+
+    <!-- Discussion questions -->
+    <div class="discussion">
+      <h3>For Discussion</h3>
+      <ol>
+        <li>{{QUESTION_1}}</li>
+        <li>{{QUESTION_2}}</li>
+        <li>{{QUESTION_3}}</li>
+      </ol>
+    </div>
+
+    <!-- Challenge (optional, audience-dependent) -->
+    <div class="challenge">
+      <h3>This Week</h3>
+      <p>{{CHALLENGE_TEXT}}</p>
+    </div>
+  </section>
+
+  <div class="study-closing">
+    {{CLOSING}}
+  </div>
+
+  <footer class="study-footer">
+    All Scripture quotations from the {{TRANSLATION}}.
+  </footer>
+
+</body>
+</html>
