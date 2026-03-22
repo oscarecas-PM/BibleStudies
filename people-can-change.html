@@ -287,7 +287,7 @@
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.3);
+      background: rgba(0,0,0,0.15);
       z-index: 1001;
     }
 
@@ -300,7 +300,7 @@
       bottom: 0;
       left: 0;
       right: 0;
-      max-height: 70vh;
+      max-height: 50vh;
       background: #fafaf7;
       border-top-left-radius: 12px;
       border-top-right-radius: 12px;
@@ -453,7 +453,7 @@
       body { padding: 1.2rem 1rem 5rem; }
       .study-header h1 { font-size: 1.3rem; }
       blockquote { padding: 0.6rem 0.8rem; margin-left: 0; margin-right: 0; }
-      .notes-drawer { max-height: 85vh; }
+      .notes-drawer { max-height: 55vh; }
     }
   </style>
 </head>
@@ -698,7 +698,6 @@
     function openDrawer() {
       overlay.classList.add('open');
       drawer.classList.add('open');
-      document.getElementById('generalNotes').focus();
     }
 
     function closeDrawer() {
