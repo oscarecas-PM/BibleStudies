@@ -2,7 +2,7 @@
 
 A Claude Code skill for building Bible studies through conversation — not generating them. You bring the topic and the audience. The assistant brings passages, context, questions, and connections. You shape it together.
 
-**Live example:** [bible-studies-five.vercel.app](https://bible-studies-five.vercel.app)
+**Live site:** [bible-studies-five.vercel.app](https://bible-studies-five.vercel.app) — landing page with all published studies
 
 ## What This Is
 

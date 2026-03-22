@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bible Studies — Learning, Growing, Sharing</title>
+  <meta name="description" content="Interactive Bible studies built with AI — exploring Scripture through technology to grow as Christians, parents, and people. Free, open-source, and built to share.">
+  <meta name="keywords" content="Bible study, interactive Bible study, AI Bible study, small group study, Scripture study, Christian growth, family Bible study">
+  <meta name="author" content="Oscar Casas">
+  <meta property="og:title" content="Bible Studies — Learning, Growing, Sharing">
+  <meta property="og:description" content="Interactive Bible studies built with AI — exploring Scripture through technology to grow as Christians, parents, and people.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://bible-studies-five.vercel.app">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Bible Studies — Learning, Growing, Sharing">
+  <meta name="twitter:description" content="Interactive Bible studies built with AI — exploring Scripture through technology to grow as Christians, parents, and people.">
+  <link rel="canonical" href="https://bible-studies-five.vercel.app">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Georgia', 'Times New Roman', serif;
+      line-height: 1.7;
+      color: #2c2c2c;
+      background: #fafaf7;
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 4rem;
+    }
+
+    /* Header */
+    .site-header {
+      text-align: center;
+      margin-bottom: 3rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid #d4d0c8;
+    }
+
+    .site-header h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #1a1a1a;
+      letter-spacing: -0.01em;
+      margin-bottom: 0.5rem;
+    }
+
+    .site-header .tagline {
+      font-style: italic;
+      color: #6b6252;
+      font-size: 1.05rem;
+    }
+
+    /* Epigraph */
+    .epigraph {
+      font-style: italic;
+      color: #5a5347;
+      text-align: center;
+      max-width: 520px;
+      margin: 0 auto 3rem;
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+
+    .epigraph cite {
+      display: block;
+      font-style: normal;
+      font-size: 0.85rem;
+      color: #8a7f72;
+      margin-top: 0.5rem;
+    }
+
+    /* Sections */
+    .section {
+      margin-bottom: 2.5rem;
+    }
+
+    .section h2 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #1a1a1a;
+      margin-bottom: 1rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 1px solid #e8e4dc;
+    }
+
+    .section p {
+      margin-bottom: 1rem;
+      color: #3d3d3d;
+    }
+
+    .section p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* Study cards */
+    .studies-grid {
+      display: grid;
+      gap: 1.25rem;
+      margin-top: 1rem;
+    }
+
+    .study-card {
+      border: 1px solid #d4d0c8;
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      background: #fff;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      display: block;
+    }
+
+    .study-card:hover {
+      border-color: #8a7f72;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+
+    .study-card h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #1a1a1a;
+      margin-bottom: 0.3rem;
+    }
+
+    .study-card .card-subtitle {
+      font-style: italic;
+      color: #6b6252;
+      font-size: 0.9rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .study-card .card-passages {
+      font-size: 0.85rem;
+      color: #8a7f72;
+    }
+
+    /* Skill callout */
+    .skill-callout {
+      background: #f5f3ee;
+      border: 1px solid #d4d0c8;
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-top: 1rem;
+    }
+
+    .skill-callout code {
+      background: #e8e4dc;
+      padding: 0.15em 0.4em;
+      border-radius: 3px;
+      font-size: 0.9em;
+      font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    }
+
+    .skill-callout a {
+      color: #5a5347;
+      font-weight: 600;
+    }
+
+    /* Footer */
+    .site-footer {
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid #d4d0c8;
+      text-align: center;
+      font-size: 0.85rem;
+      color: #8a7f72;
+    }
+
+    .site-footer a {
+      color: #6b6252;
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      body { padding: 1.2rem 1rem 3rem; }
+      .site-header h1 { font-size: 1.5rem; }
+    }
+  </style>
+
+  <!-- Structured data for search engines and AI -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Bible Studies",
+    "url": "https://bible-studies-five.vercel.app",
+    "description": "Interactive Bible studies built with AI — exploring Scripture through technology to grow as Christians, parents, and people.",
+    "author": {
+      "@type": "Person",
+      "name": "Oscar Casas"
+    }
+  }
+  </script>
+</head>
+<body>
+
+  <header class="site-header">
+    <h1>Bible Studies</h1>
+    <div class="tagline">Learning, Growing, Sharing</div>
+  </header>
+
+  <div class="epigraph">
+    "Your word is a lamp for my feet, a light on my path."
+    <cite>Psalm 119:105</cite>
+  </div>
+
+  <!-- About -->
+  <div class="section">
+    <h2>Why This Exists</h2>
+    <p>
+      I'm a Christian, a husband, and a father — and I'm still learning what all three of those mean. Scripture has been the foundation of that learning, but I've found that the best way to understand it isn't to read passively. It's to dig in, ask questions, sit with uncomfortable passages, and talk about them with the people I love.
+    </p>
+    <p>
+      These studies come from that process. Each one started as a conversation — a topic I was wrestling with, a passage I wanted to understand better, a question one of my kids asked that I didn't have a ready answer for. I built them to help me grow, and I share them because growth isn't meant to be solitary.
+    </p>
+  </div>
+
+  <div class="section">
+    <h2>Built with AI, Shaped by People</h2>
+    <p>
+      Every study here was created using a <a href="https://github.com/oscarecas-PM/BibleStudies">Bible study skill</a> I built for Claude Code. The AI surfaces passages, provides historical and linguistic context, and generates discussion questions — but it doesn't write the study. I do. The tool brings the raw material; I decide what resonates, what goes deeper, and what my audience needs to hear.
+    </p>
+    <p>
+      I believe technology should serve us — not distract us, not replace our thinking, but amplify what we're already trying to do. If you're trying to know God's word better, to lead a small group, to have deeper conversations with your family about faith — these tools can help you do more of that, not less. The goal isn't efficiency. It's depth.
+    </p>
+    <p>
+      My hope is that we learn to adopt technology in ways that make us more present, more peaceful, and more fulfilled — not more busy. That we use these tools to go deeper into what matters, not to skim the surface faster. Scripture deserves our full attention. Technology can help us give it.
+    </p>
+  </div>
+
+  <!-- Studies -->
+  <div class="section">
+    <h2>Studies</h2>
+    <div class="studies-grid">
+
+      <a href="people-can-change.html" class="study-card">
+        <h3>People Can Change</h3>
+        <div class="card-subtitle">A Bible Study on Transformation</div>
+        <div class="card-passages">2 Corinthians 5:17 &middot; Ezekiel 36:26&ndash;27 &middot; Psalm 103:8&ndash;12 &middot; Colossians 3:12&ndash;15 &middot; Romans 12:2</div>
+      </a>
+
+      <!-- Future studies go here. Copy the study-card pattern above. -->
+
+    </div>
+  </div>
+
+  <!-- Skill -->
+  <div class="section">
+    <h2>Make Your Own</h2>
+    <div class="skill-callout">
+      <p>
+        The skill I use to create these studies is free and open source. If you have <a href="https://docs.anthropic.com/en/docs/claude-code">Claude Code</a>, you can clone the <a href="https://github.com/oscarecas-PM/BibleStudies">repository</a> and run <code>/bible-study</code> to start building your own — no programming required. Just bring a topic and a willingness to dig in.
+      </p>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <a href="https://github.com/oscarecas-PM/BibleStudies">GitHub</a>
+  </footer>
+
+</body>
+</html>
