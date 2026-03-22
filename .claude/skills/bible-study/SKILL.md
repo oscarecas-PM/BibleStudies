@@ -123,18 +123,30 @@ When the user is ready to export, ask which format(s) they want:
 ### Markdown
 Save to the repository as a `.md` file in a logical location.
 
-### HTML (Vercel-hostable)
-Generate a self-contained HTML file using the template at `templates/study.html` (if available) or create a clean, responsive HTML page with:
-- Readable typography (system fonts, comfortable line height)
-- Mobile-friendly layout
-- Scripture passages visually distinguished (indented, styled)
-- Print-friendly styles included
-- Save to the repository — ready to deploy to Vercel or any static host
+### HTML (Vercel-hostable) — Recommended
+Generate a self-contained HTML file using the template at `templates/study.html`. The template includes:
+
+**Reading & Typography**
+- Readable serif typography, comfortable line height, mobile-friendly layout
+- Scripture passages visually distinguished with left-border styling
+- "This Week" challenge boxes in a distinct green accent
+- Print-friendly CSS included
+
+**Interactive Note-Taking**
+- A text area under each discussion question for personal notes
+- A floating "Notes" button (bottom-right corner, always visible) that opens a slide-up drawer for general/overall notes — accessible without scrolling through the study
+- All notes auto-save to browser localStorage so they persist between visits
+
+**Sharing Notes**
+- "Email to Self" button — composes an email with the study title + all notes (per-question and general). Opens the device's native email client via `mailto:`. Notes land in their inbox where they can actually find them.
+- "Share" button — uses the Web Share API (available on mobile browsers) to send notes to whatever app they already use: Messages, WhatsApp, Google Drive, Notes app, etc. Automatically hidden on browsers that don't support it.
+
+When generating from the template, replace all `{{PLACEHOLDER}}` values with the study content. For discussion questions, maintain the `data-question` attributes on the textarea elements so localStorage keys remain consistent.
+
+Save to the repository — ready to deploy to Vercel or any static host.
 
 ### PDF
-Generate a print-ready version. Options:
-- Convert the HTML version to PDF via the browser's print function (simplest)
-- Or generate via pandoc if available on the system
+The HTML version is designed to print cleanly. Users can print-to-PDF directly from their browser. Note fields print their content (or show "(no notes)" if empty), and the floating button/drawer are hidden in print.
 
 Always include a footer: *"All Scripture quotations from the [Translation]."*
 
