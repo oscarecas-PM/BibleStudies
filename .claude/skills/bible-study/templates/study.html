@@ -73,6 +73,18 @@
       font-style: italic;
     }
 
+    /* Hero Image */
+    .hero-image {
+      margin: 2rem 0 0;
+      text-align: center;
+    }
+
+    .hero-image img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 6px;
+    }
+
     /* Sections */
     .study-section {
       margin: 2.5rem 0;
@@ -481,7 +493,27 @@
     </div>
   </header>
 
-  <!-- Repeat this block for each section of the study -->
+  <!-- Hero image (optional) — embedded as base64 data URI for portability -->
+  <!-- <figure class="hero-image">
+    <img src="data:image/jpeg;base64,{{HERO_IMAGE_BASE64}}" alt="{{HERO_IMAGE_ALT}}">
+  </figure> -->
+
+  <!-- Opening question (before scripture sections) -->
+  <!-- <section class="study-section">
+    <div class="discussion">
+      <h3>Opening</h3>
+      <ol>
+        <li>
+          <span class="question-text">{{OPENING_QUESTION}}</span>
+          <textarea class="note-field" placeholder="Your thoughts..." data-question="1"></textarea>
+        </li>
+      </ol>
+    </div>
+  </section> -->
+
+  <!-- Repeat this block for each section of the study.
+       Each section includes its own reflection question inline,
+       keeping the question close to the scripture it references. -->
   <section class="study-section">
     <h2>{{SECTION_TITLE}}</h2>
 
@@ -498,31 +530,36 @@
 
     <p>{{MORE_EXPOSITION}}</p>
 
-    <!-- Discussion questions with note fields -->
+    <!-- Inline reflection question for this section's scripture -->
     <div class="discussion">
-      <h3>For Discussion</h3>
-      <ol>
+      <h3>Reflect</h3>
+      <ol start="{{QUESTION_NUMBER}}">
         <li>
-          <span class="question-text">{{QUESTION_1}}</span>
-          <textarea class="note-field" placeholder="Your thoughts..." data-question="1"></textarea>
-        </li>
-        <li>
-          <span class="question-text">{{QUESTION_2}}</span>
-          <textarea class="note-field" placeholder="Your thoughts..." data-question="2"></textarea>
-        </li>
-        <li>
-          <span class="question-text">{{QUESTION_3}}</span>
-          <textarea class="note-field" placeholder="Your thoughts..." data-question="3"></textarea>
+          <span class="question-text">{{QUESTION}}</span>
+          <textarea class="note-field" placeholder="Your thoughts..." data-question="{{QUESTION_NUMBER}}"></textarea>
         </li>
       </ol>
     </div>
-
-    <!-- Challenge (optional, audience-dependent) -->
-    <div class="challenge">
-      <h3>This Week</h3>
-      <p>{{CHALLENGE_TEXT}}</p>
-    </div>
   </section>
+
+  <!-- Closing question (after all scripture sections) -->
+  <!-- <section class="study-section">
+    <div class="discussion">
+      <h3>Closing</h3>
+      <ol start="{{CLOSING_QUESTION_NUMBER}}">
+        <li>
+          <span class="question-text">{{CLOSING_QUESTION}}</span>
+          <textarea class="note-field" placeholder="Your thoughts..." data-question="{{CLOSING_QUESTION_NUMBER}}"></textarea>
+        </li>
+      </ol>
+    </div>
+  </section> -->
+
+  <!-- Challenge (optional, audience-dependent) -->
+  <div class="challenge">
+    <h3>This Week</h3>
+    <p>{{CHALLENGE_TEXT}}</p>
+  </div>
 
   <div class="study-closing">
     {{CLOSING}}

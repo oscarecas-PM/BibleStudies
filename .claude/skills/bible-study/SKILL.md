@@ -93,11 +93,11 @@ When the user prunes, don't just remove — actively redirect. If they cut a pas
 When the user is satisfied with the material, help them organize it into a single coherent session (30–45 minutes when used in person):
 
 ### Structure
-- An opening that frames why this topic matters (2–3 sentences, not a thesis)
+- An opening question that frames the topic before diving into scripture
 - Scripture passages woven into brief exposition — let the text lead
-- 3 discussion questions that build on each other
+- Each scripture section includes its own inline reflection question, placed right after the passage it references — never group all questions at the end, as readers lose the connection to the text
 - 1 real-world challenge or interactive element appropriate to the audience
-- A closing thought that ties threads together without over-concluding
+- A closing question that ties threads together without over-concluding
 
 ### Tone
 Match the quality and voice of the Lent study example, adjusted for audience:
@@ -115,6 +115,25 @@ Match the quality and voice of the Lent study example, adjusted for audience:
 - Over-explaining — trust the reader and the text
 - Producing a "finished" study without iteration — always present material as a starting point
 - Being precious about your own suggestions — if the user cuts something, let it go
+
+## Hero Image
+
+After the study content is finalized but before exporting, ask the user if they'd like a hero image for the study. This image appears near the top (between the header and the opening question) and sets the visual tone.
+
+### If the user wants an image:
+
+1. **Suggest 2–3 image generation prompts** based on the study's key scripture passages. Tailor prompts for tools like ChatGPT (DALL-E) or similar AI image generators. Good prompts:
+   - Draw on the central metaphor of the study (e.g., "heart of stone transforming into a heart of flesh" for Ezekiel 36)
+   - Specify an art style that fits the study's tone (pen-and-ink sketch, watercolor, oil painting, etc.)
+   - Keep descriptions concrete and visual — avoid abstract theological language
+   - Example: *"A detailed pen-and-ink illustration on aged parchment: a rough stone on the left gradually transforming into an anatomical human heart on the right, with flowing organic lines connecting the two. Coffee-stained paper texture. No text."*
+
+2. **Make it easy to provide the image.** The user may:
+   - Give a file path on disk → read and embed it
+   - Upload it to the GitHub repo → pull it down and embed it
+   - Provide a URL → attempt to fetch it
+
+3. **Always embed as base64 data URI** in the final HTML. This ensures the study is fully self-contained — it works when emailed, saved as PDF, or opened offline without external dependencies. Use the `<figure class="hero-image">` element from the template.
 
 ## Exporting the Study
 
@@ -141,7 +160,11 @@ Generate a self-contained HTML file using the template at `templates/study.html`
 - "Email to Self" button — composes an email with the study title + all notes (per-question and general). Opens the device's native email client via `mailto:`. Notes land in their inbox where they can actually find them.
 - "Share" button — uses the Web Share API (available on mobile browsers) to send notes to whatever app they already use: Messages, WhatsApp, Google Drive, Notes app, etc. Automatically hidden on browsers that don't support it.
 
-When generating from the template, replace all `{{PLACEHOLDER}}` values with the study content. For discussion questions, maintain the `data-question` attributes on the textarea elements so localStorage keys remain consistent.
+When generating from the template, replace all `{{PLACEHOLDER}}` values with the study content. Key structural notes:
+
+- **Inline questions**: Each scripture section gets its own `<div class="discussion">` with a "Reflect" heading and a single question referencing that section's passage. Use sequential `data-question` attributes and matching `ol start` values across all sections so numbering is continuous. Opening and closing questions get their own sections.
+- **Hero image**: If the user provided one, embed it as a base64 data URI in the `<figure class="hero-image">` element. This keeps the file self-contained for email, PDF, and offline use.
+- **Question numbering**: Maintain the `data-question` attributes on the textarea elements so localStorage keys remain consistent.
 
 Save to the repository — ready to deploy to Vercel or any static host.
 
