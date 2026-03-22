@@ -107,14 +107,49 @@
       padding: 0.8rem 1.2rem;
       background: #f5f3ee;
       font-size: 0.92rem;
+      position: relative;
+    }
+
+    blockquote .scripture-header {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.4rem;
     }
 
     blockquote .scripture-ref {
-      display: block;
       font-weight: 700;
       font-size: 0.85rem;
       color: #6b5d4f;
-      margin-bottom: 0.4rem;
+    }
+
+    .listen-btn {
+      background: none;
+      border: 1px solid #c8bfa8;
+      border-radius: 50%;
+      width: 26px;
+      height: 26px;
+      font-size: 0.7rem;
+      color: #8a7d6b;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s, color 0.15s;
+      flex-shrink: 0;
+      padding: 0;
+      line-height: 1;
+    }
+
+    .listen-btn:hover {
+      background: #e8e3d9;
+      color: #6b5d4f;
+    }
+
+    .listen-btn.playing {
+      background: #6b5d4f;
+      color: #fff;
+      border-color: #6b5d4f;
     }
 
     /* Discussion questions */
@@ -413,7 +448,8 @@
       .notes-fab,
       .notes-drawer-overlay,
       .notes-drawer,
-      .share-toolbar { display: none !important; }
+      .share-toolbar,
+      .listen-btn { display: none !important; }
     }
 
     /* ── Mobile ── */
@@ -453,8 +489,11 @@
     <p>{{EXPOSITION}}</p>
 
     <blockquote>
-      <span class="scripture-ref">{{SCRIPTURE_REF}}</span>
-      {{SCRIPTURE_TEXT}}
+      <div class="scripture-header">
+        <span class="scripture-ref">{{SCRIPTURE_REF}}</span>
+        <button class="listen-btn" aria-label="Listen to this passage" title="Listen">&#9654;</button>
+      </div>
+      <span class="scripture-text">{{SCRIPTURE_TEXT}}</span>
     </blockquote>
 
     <p>{{MORE_EXPOSITION}}</p>
@@ -633,6 +672,71 @@
         }
       }
     });
+
+    // ── Text-to-Speech for Scripture passages ──
+    let currentUtterance = null;
+    let currentBtn = null;
+
+    function stopSpeaking() {
+      speechSynthesis.cancel();
+      if (currentBtn) {
+        currentBtn.classList.remove('playing');
+        currentBtn.innerHTML = '&#9654;';
+      }
+      currentUtterance = null;
+      currentBtn = null;
+    }
+
+    document.querySelectorAll('.listen-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const blockquote = btn.closest('blockquote');
+        const textEl = blockquote.querySelector('.scripture-text');
+        if (!textEl) return;
+
+        // If this button is already playing, stop it
+        if (currentBtn === btn) {
+          stopSpeaking();
+          return;
+        }
+
+        // Stop any other playing passage
+        stopSpeaking();
+
+        const text = textEl.textContent.trim();
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.rate = 0.9;
+        utterance.pitch = 1;
+
+        // Mark as playing
+        btn.classList.add('playing');
+        btn.innerHTML = '&#9724;';
+        currentBtn = btn;
+        currentUtterance = utterance;
+
+        utterance.onend = () => {
+          btn.classList.remove('playing');
+          btn.innerHTML = '&#9654;';
+          currentBtn = null;
+          currentUtterance = null;
+        };
+
+        utterance.onerror = () => {
+          btn.classList.remove('playing');
+          btn.innerHTML = '&#9654;';
+          currentBtn = null;
+          currentUtterance = null;
+        };
+
+        speechSynthesis.speak(utterance);
+      });
+    });
+
+    // Hide listen buttons if speechSynthesis is not supported
+    if (!('speechSynthesis' in window)) {
+      document.querySelectorAll('.listen-btn').forEach(btn => {
+        btn.style.display = 'none';
+      });
+    }
   </script>
 
 </body>
