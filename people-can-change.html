@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>People Can Change</title>
+  <style>
+    /* Reset */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* Typography & Layout */
+    body {
+      font-family: 'Georgia', 'Times New Roman', serif;
+      line-height: 1.7;
+      color: #2c2c2c;
+      background: #fafaf7;
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 6rem;
+    }
+
+    /* Header */
+    .study-header {
+      text-align: center;
+      margin-bottom: 3rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid #d4d0c8;
+    }
+
+    .study-header h1 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #1a1a1a;
+      margin-bottom: 0.4rem;
+    }
+
+    .study-header .subtitle {
+      font-size: 1.05rem;
+      font-style: italic;
+      color: #5a5a5a;
+      margin-bottom: 1.5rem;
+    }
+
+    .epigraph {
+      font-style: italic;
+      color: #4a4a4a;
+      margin: 1.5rem auto;
+      max-width: 480px;
+      font-size: 0.95rem;
+    }
+
+    .epigraph cite {
+      display: block;
+      font-style: normal;
+      font-size: 0.85rem;
+      color: #777;
+      margin-top: 0.3rem;
+    }
+
+    .study-intro {
+      font-size: 0.95rem;
+      color: #444;
+      text-align: left;
+      margin-top: 1.5rem;
+    }
+
+    .study-meta {
+      font-size: 0.82rem;
+      color: #888;
+      margin-top: 1rem;
+      font-style: italic;
+    }
+
+    /* Sections */
+    .study-section {
+      margin: 2.5rem 0;
+      padding-top: 2rem;
+      border-top: 1px solid #e0ddd5;
+    }
+
+    .study-section h2 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin-bottom: 1.2rem;
+    }
+
+    .study-section h3 {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: #333;
+      margin: 1.5rem 0 0.6rem;
+    }
+
+    /* Body text */
+    p {
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+    }
+
+    /* Scripture blocks */
+    blockquote {
+      border-left: 3px solid #b8a88a;
+      margin: 1.2rem 0;
+      padding: 0.8rem 1.2rem;
+      background: #f5f3ee;
+      font-size: 0.92rem;
+      position: relative;
+    }
+
+    blockquote .scripture-header {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.4rem;
+    }
+
+    blockquote .scripture-ref {
+      font-weight: 700;
+      font-size: 0.85rem;
+      color: #6b5d4f;
+    }
+
+    .listen-btn {
+      background: none;
+      border: 1px solid #c8bfa8;
+      border-radius: 50%;
+      width: 26px;
+      height: 26px;
+      font-size: 0.7rem;
+      color: #8a7d6b;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s, color 0.15s;
+      flex-shrink: 0;
+      padding: 0;
+      line-height: 1;
+    }
+
+    .listen-btn:hover {
+      background: #e8e3d9;
+      color: #6b5d4f;
+    }
+
+    .listen-btn.playing {
+      background: #6b5d4f;
+      color: #fff;
+      border-color: #6b5d4f;
+    }
+
+    /* Discussion questions */
+    .discussion {
+      margin: 1.5rem 0;
+    }
+
+    .discussion h3 {
+      font-size: 0.95rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #6b5d4f;
+      margin-bottom: 0.8rem;
+    }
+
+    .discussion ol {
+      padding-left: 1.4rem;
+      list-style: none;
+      counter-reset: question;
+    }
+
+    .discussion li {
+      margin-bottom: 1.2rem;
+      font-size: 0.93rem;
+      line-height: 1.6;
+      counter-increment: question;
+    }
+
+    .discussion li .question-text::before {
+      content: counter(question) ". ";
+      font-weight: 600;
+    }
+
+    .discussion li .question-text {
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Note fields */
+    .note-field {
+      width: 100%;
+      min-height: 3.5rem;
+      padding: 0.6rem 0.8rem;
+      font-family: 'Georgia', 'Times New Roman', serif;
+      font-size: 0.88rem;
+      line-height: 1.5;
+      color: #2c2c2c;
+      background: #fff;
+      border: 1px solid #d4d0c8;
+      border-radius: 4px;
+      resize: vertical;
+      transition: border-color 0.2s;
+    }
+
+    .note-field:focus {
+      outline: none;
+      border-color: #b8a88a;
+      box-shadow: 0 0 0 2px rgba(184, 168, 138, 0.2);
+    }
+
+    .note-field::placeholder {
+      color: #bbb;
+      font-style: italic;
+    }
+
+    /* Challenge / interactive element */
+    .challenge {
+      margin: 1.5rem 0;
+      padding: 1rem 1.2rem;
+      background: #eef0e8;
+      border-radius: 6px;
+      border-left: 3px solid #7a8b5c;
+    }
+
+    .challenge h3 {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #5a6b42;
+      margin-bottom: 0.5rem;
+    }
+
+    .challenge p {
+      font-size: 0.93rem;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Closing */
+    .study-closing {
+      margin-top: 2.5rem;
+      padding-top: 2rem;
+      border-top: 1px solid #e0ddd5;
+      font-style: italic;
+      color: #555;
+      font-size: 0.93rem;
+    }
+
+    /* Footer */
+    .study-footer {
+      margin-top: 3rem;
+      padding-top: 1rem;
+      border-top: 1px solid #d4d0c8;
+      font-size: 0.8rem;
+      color: #999;
+      text-align: center;
+    }
+
+    /* ── Floating Notes Button ── */
+    .notes-fab {
+      position: fixed;
+      bottom: 1.2rem;
+      right: 1.2rem;
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: #6b5d4f;
+      color: #fff;
+      border: none;
+      font-size: 1.4rem;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+
+    .notes-fab:hover {
+      background: #5a4d41;
+    }
+
+    /* ── Notes Drawer ── */
+    .notes-drawer-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.3);
+      z-index: 1001;
+    }
+
+    .notes-drawer-overlay.open {
+      display: block;
+    }
+
+    .notes-drawer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      max-height: 70vh;
+      background: #fafaf7;
+      border-top-left-radius: 12px;
+      border-top-right-radius: 12px;
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.15);
+      z-index: 1002;
+      transform: translateY(100%);
+      transition: transform 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .notes-drawer.open {
+      transform: translateY(0);
+    }
+
+    .notes-drawer-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 1.2rem 0.6rem;
+      border-bottom: 1px solid #e0ddd5;
+    }
+
+    .notes-drawer-header h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #1a1a1a;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .notes-drawer-close {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: #888;
+      cursor: pointer;
+      padding: 0 0.2rem;
+    }
+
+    .notes-drawer-body {
+      padding: 1rem 1.2rem 1.5rem;
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    .notes-drawer-body textarea {
+      width: 100%;
+      min-height: 12rem;
+      padding: 0.8rem;
+      font-family: 'Georgia', 'Times New Roman', serif;
+      font-size: 0.92rem;
+      line-height: 1.6;
+      color: #2c2c2c;
+      background: #fff;
+      border: 1px solid #d4d0c8;
+      border-radius: 6px;
+      resize: vertical;
+    }
+
+    .notes-drawer-body textarea:focus {
+      outline: none;
+      border-color: #b8a88a;
+      box-shadow: 0 0 0 2px rgba(184, 168, 138, 0.2);
+    }
+
+    .notes-drawer-body textarea::placeholder {
+      color: #bbb;
+      font-style: italic;
+    }
+
+    /* ── Share toolbar ── */
+    .share-toolbar {
+      display: flex;
+      gap: 0.6rem;
+      padding: 0.8rem 1.2rem;
+      border-top: 1px solid #e0ddd5;
+      background: #f5f3ee;
+    }
+
+    .share-btn {
+      flex: 1;
+      padding: 0.6rem 0.8rem;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      border: 1px solid #d4d0c8;
+      border-radius: 6px;
+      background: #fff;
+      color: #4a4a4a;
+      cursor: pointer;
+      text-align: center;
+      transition: background 0.15s;
+    }
+
+    .share-btn:hover {
+      background: #f0ede6;
+    }
+
+    .share-btn.primary {
+      background: #6b5d4f;
+      color: #fff;
+      border-color: #6b5d4f;
+    }
+
+    .share-btn.primary:hover {
+      background: #5a4d41;
+    }
+
+    .share-btn.no-share-api {
+      display: none;
+    }
+
+    /* ── Print styles ── */
+    @media print {
+      body {
+        background: white;
+        max-width: none;
+        padding: 0.5in;
+        font-size: 11pt;
+      }
+
+      .study-section { page-break-inside: avoid; }
+      blockquote { background: none; border-left-color: #999; }
+      .challenge { background: none; border: 1px solid #ccc; }
+
+      .note-field {
+        border: none;
+        background: none;
+        padding: 0;
+        min-height: auto;
+        resize: none;
+      }
+
+      .note-field:empty::after {
+        content: "(no notes)";
+        color: #ccc;
+        font-style: italic;
+      }
+
+      .notes-fab,
+      .notes-drawer-overlay,
+      .notes-drawer,
+      .share-toolbar,
+      .listen-btn { display: none !important; }
+    }
+
+    /* ── Mobile ── */
+    @media (max-width: 600px) {
+      body { padding: 1.2rem 1rem 5rem; }
+      .study-header h1 { font-size: 1.3rem; }
+      blockquote { padding: 0.6rem 0.8rem; margin-left: 0; margin-right: 0; }
+      .notes-drawer { max-height: 85vh; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="study-header">
+    <h1>People Can Change</h1>
+    <div class="subtitle">A Bible Study on Transformation</div>
+
+    <div class="epigraph">
+      "Therefore, if anyone is in Christ, the new creation has come: The old has gone, the new is here!"
+      <cite>2 Corinthians 5:17</cite>
+    </div>
+
+    <div class="study-intro">
+      We've all heard it — "people don't change." Maybe we've said it ourselves. But Scripture tells a different story. From hearts of stone replaced with hearts of flesh, to minds renewed and old selves put away, the Bible insists that transformation is not only possible — it's the point. This study walks through five passages that describe what change looks like, where it comes from, and what it asks of us.
+    </div>
+
+    <div class="study-meta">
+      All Scripture quotations from the NIV. One session.
+    </div>
+  </header>
+
+  <!-- Section 1: New Creation -->
+  <section class="study-section">
+    <h2>The New Creation</h2>
+
+    <p>Paul doesn't describe change as improvement or self-help. He calls it a new creation — the old gone, something entirely new standing in its place. That's a bold claim. It raises the question: if the old has truly gone, why do we still feel its pull?</p>
+
+    <blockquote>
+      <div class="scripture-header">
+        <span class="scripture-ref">2 Corinthians 5:17</span>
+        <button class="listen-btn" aria-label="Listen to this passage" title="Listen">&#9654;</button>
+      </div>
+      <span class="scripture-text">Therefore, if anyone is in Christ, the new creation has come: The old has gone, the new is here!</span>
+    </blockquote>
+
+    <p>This isn't a promise of perfection — it's a declaration of identity. The foundation has shifted, even when the building is still under construction.</p>
+  </section>
+
+  <!-- Section 2: Heart Transplant -->
+  <section class="study-section">
+    <h2>The Heart Transplant</h2>
+
+    <p>Ezekiel writes to a people in exile — displaced, broken, far from home. And God's promise isn't "try harder." It's "I will do this." He removes the stone. He puts in the flesh. He places His Spirit inside. The surgery is His.</p>
+
+    <blockquote>
+      <div class="scripture-header">
+        <span class="scripture-ref">Ezekiel 36:26–27</span>
+        <button class="listen-btn" aria-label="Listen to this passage" title="Listen">&#9654;</button>
+      </div>
+      <span class="scripture-text">I will give you a new heart and put a new spirit in you; I will remove from you your heart of stone and give you a heart of flesh. And I will put my Spirit in you and move you to follow my decrees and be careful to keep my laws.</span>
+    </blockquote>
+
+    <p>Notice the sequence: new heart, then new obedience. The change in behavior follows the change in nature — not the other way around.</p>
+  </section>
+
+  <!-- Section 3: As Far as East from West -->
+  <section class="study-section">
+    <h2>As Far as the East Is from the West</h2>
+
+    <p>David writes as someone who has needed — and received — deep mercy. Psalm 103 isn't abstract theology. It's the testimony of a man who knows what he's been forgiven of, and it's overwhelming.</p>
+
+    <blockquote>
+      <div class="scripture-header">
+        <span class="scripture-ref">Psalm 103:8–12</span>
+        <button class="listen-btn" aria-label="Listen to this passage" title="Listen">&#9654;</button>
+      </div>
+      <span class="scripture-text">The Lord is compassionate and gracious, slow to anger, abounding in love. He will not always accuse, nor will he harbor his anger forever; he does not treat us as our sins deserve or repay us according to our iniquities. For as high as the heavens are above the earth, so great is his love for those who fear him; as far as the east is from the west, so far has he removed our transgressions from us.</span>
+    </blockquote>
+
+    <p>If God has removed our sins that far, the question becomes: why do we keep going back to pick them up?</p>
+  </section>
+
+  <!-- Section 4: Clothe Yourselves -->
+  <section class="study-section">
+    <h2>Clothe Yourselves</h2>
+
+    <p>Paul shifts from the theological to the practical. If you've been raised with Christ, here's what you put on — like getting dressed in the morning. It's deliberate, daily, and specific.</p>
+
+    <blockquote>
+      <div class="scripture-header">
+        <span class="scripture-ref">Colossians 3:12–15</span>
+        <button class="listen-btn" aria-label="Listen to this passage" title="Listen">&#9654;</button>
+      </div>
+      <span class="scripture-text">Therefore, as God's chosen people, holy and dearly loved, clothe yourselves with compassion, kindness, humility, gentleness and patience. Bear with each other and forgive one another if any of you has a grievance against someone. Forgive as the Lord forgave you. And over all these virtues put on love, which binds them all together in perfect unity. Let the peace of Christ rule in your hearts, since as members of one body you were called to peace. And be thankful.</span>
+    </blockquote>
+
+    <p>The metaphor of clothing is intentional — these aren't personality traits you're born with. They're things you choose to put on. Every day.</p>
+  </section>
+
+  <!-- Section 5: Renewing of the Mind -->
+  <section class="study-section">
+    <h2>The Renewing of Your Mind</h2>
+
+    <p>Romans 12 sits at the hinge of Paul's letter — after eleven chapters of theology, he turns to life. And the first instruction isn't an action. It's a transformation of how you think.</p>
+
+    <blockquote>
+      <div class="scripture-header">
+        <span class="scripture-ref">Romans 12:2</span>
+        <button class="listen-btn" aria-label="Listen to this passage" title="Listen">&#9654;</button>
+      </div>
+      <span class="scripture-text">Do not conform to the pattern of this world, but be transformed by the renewing of your mind. Then you will be able to test and approve what God's will is — his good, pleasing and perfect will.</span>
+    </blockquote>
+
+    <p>The word "transformed" here is <em>metamorphoo</em> — the same word used for Jesus' transfiguration. It's not a minor adjustment. It's a fundamental change in form.</p>
+  </section>
+
+  <!-- Discussion Questions -->
+  <section class="study-section">
+    <h2>Discussion</h2>
+
+    <div class="discussion">
+      <h3>Opening</h3>
+      <ol>
+        <li>
+          <span class="question-text">When you hear someone say "people don't change," do you believe that? Why or why not?</span>
+          <textarea class="note-field" placeholder="Your thoughts..." data-question="1"></textarea>
+        </li>
+      </ol>
+    </div>
+
+    <div class="discussion">
+      <h3>Digging In</h3>
+      <ol start="2">
+        <li>
+          <span class="question-text">In 2 Corinthians 5:17, Paul says the old "has gone." Is that instant or a process? What has that looked like in your own life?</span>
+          <textarea class="note-field" placeholder="Your thoughts..." data-question="2"></textarea>
+        </li>
+        <li>
+          <span class="question-text">Ezekiel 36:26–27 says God does the heart transplant — He removes the stone, He puts in His Spirit. What's our part if He's doing the surgery?</span>
+          <textarea class="note-field" placeholder="Your thoughts..." data-question="3"></textarea>
+        </li>
+        <li>
+          <span class="question-text">Psalm 103 says God removes our sins "as far as the east is from the west." If God has done that, why do we still carry guilt and shame around?</span>
+          <textarea class="note-field" placeholder="Your thoughts..." data-question="4"></textarea>
+        </li>
+        <li>
+          <span class="question-text">Colossians 3:12–15 gives a practical list — compassion, kindness, humility, patience, forgiveness. Which one is hardest for you right now, and why?</span>
+          <textarea class="note-field" placeholder="Your thoughts..." data-question="5"></textarea>
+        </li>
+        <li>
+          <span class="question-text">Romans 12:2 says transformation comes through "renewing of your mind." What does that actually look like day to day?</span>
+          <textarea class="note-field" placeholder="Your thoughts..." data-question="6"></textarea>
+        </li>
+      </ol>
+    </div>
+
+    <div class="discussion">
+      <h3>Closing</h3>
+      <ol start="7">
+        <li>
+          <span class="question-text">Last night we spoke about change, almost unrecognizable change. Think back in the last 2–3 years — how have you changed? What motivated or powered that change?</span>
+          <textarea class="note-field" placeholder="Your thoughts..." data-question="7"></textarea>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- Challenge -->
+  <section class="study-section">
+    <div class="challenge">
+      <h3>This Week</h3>
+      <p>Pick one item from Colossians 3:12–15 — compassion, kindness, humility, gentleness, patience, forgiveness, love — and focus on putting it on deliberately each morning this week. At the end of the week, notice what changed.</p>
+    </div>
+  </section>
+
+  <div class="study-closing">
+    "Be transformed by the renewing of your mind." Not improved. Not adjusted. Transformed. The God who replaces hearts of stone with hearts of flesh is still in the business of making people new.
+  </div>
+
+  <footer class="study-footer">
+    All Scripture quotations from the New International Version (NIV).
+  </footer>
+
+  <!-- Floating Notes Button -->
+  <button class="notes-fab" id="notesFab" aria-label="Open general notes" title="General Notes">
+    &#9998;
+  </button>
+
+  <!-- Notes Drawer -->
+  <div class="notes-drawer-overlay" id="notesOverlay"></div>
+  <div class="notes-drawer" id="notesDrawer">
+    <div class="notes-drawer-header">
+      <h3>General Notes</h3>
+      <button class="notes-drawer-close" id="notesClose" aria-label="Close notes">&times;</button>
+    </div>
+    <div class="notes-drawer-body">
+      <textarea id="generalNotes" placeholder="Overall thoughts, reflections, things to come back to..."></textarea>
+    </div>
+    <div class="share-toolbar">
+      <button class="share-btn primary" id="emailBtn">Email to Self</button>
+      <button class="share-btn" id="shareBtn">Share</button>
+    </div>
+  </div>
+
+  <script>
+    // ── Local Storage: auto-save all notes ──
+    const STORAGE_KEY = 'bible-study-notes-' + location.pathname;
+
+    function saveNotes() {
+      const data = {
+        general: document.getElementById('generalNotes').value,
+        questions: {}
+      };
+      document.querySelectorAll('.note-field').forEach(el => {
+        const key = el.getAttribute('data-question');
+        if (key) data.questions[key] = el.value;
+      });
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch(e) {}
+    }
+
+    function loadNotes() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return;
+        const data = JSON.parse(raw);
+        if (data.general) document.getElementById('generalNotes').value = data.general;
+        if (data.questions) {
+          document.querySelectorAll('.note-field').forEach(el => {
+            const key = el.getAttribute('data-question');
+            if (key && data.questions[key]) el.value = data.questions[key];
+          });
+        }
+      } catch(e) {}
+    }
+
+    document.addEventListener('input', e => {
+      if (e.target.classList.contains('note-field') || e.target.id === 'generalNotes') {
+        saveNotes();
+      }
+    });
+
+    loadNotes();
+
+    // ── Notes Drawer toggle ──
+    const fab = document.getElementById('notesFab');
+    const drawer = document.getElementById('notesDrawer');
+    const overlay = document.getElementById('notesOverlay');
+    const closeBtn = document.getElementById('notesClose');
+
+    function openDrawer() {
+      overlay.classList.add('open');
+      drawer.classList.add('open');
+      document.getElementById('generalNotes').focus();
+    }
+
+    function closeDrawer() {
+      overlay.classList.remove('open');
+      drawer.classList.remove('open');
+    }
+
+    fab.addEventListener('click', openDrawer);
+    overlay.addEventListener('click', closeDrawer);
+    closeBtn.addEventListener('click', closeDrawer);
+
+    // ── Collect all notes into a text block ──
+    function gatherStudyWithNotes() {
+      const title = document.querySelector('.study-header h1')?.textContent || 'Bible Study';
+      const subtitle = document.querySelector('.subtitle')?.textContent || '';
+
+      let text = title + '\n' + subtitle + '\n\n';
+
+      document.querySelectorAll('.discussion li').forEach((li, i) => {
+        const questionEl = li.querySelector('.question-text');
+        const noteEl = li.querySelector('.note-field');
+        const question = questionEl ? questionEl.textContent.trim() : '';
+        const note = noteEl ? noteEl.value.trim() : '';
+
+        text += question + '\n';
+        if (note) {
+          text += 'My notes: ' + note + '\n';
+        }
+        text += '\n';
+      });
+
+      const general = document.getElementById('generalNotes').value.trim();
+      if (general) {
+        text += '---\nGeneral Notes:\n' + general + '\n';
+      }
+
+      return text;
+    }
+
+    // ── Email to Self ──
+    document.getElementById('emailBtn').addEventListener('click', () => {
+      const title = document.querySelector('.study-header h1')?.textContent || 'Bible Study';
+      const body = gatherStudyWithNotes();
+      const subject = encodeURIComponent('My Notes — ' + title);
+      const mailBody = encodeURIComponent(body);
+      window.location.href = 'mailto:?subject=' + subject + '&body=' + mailBody;
+    });
+
+    // ── Web Share API ──
+    const shareBtn = document.getElementById('shareBtn');
+
+    if (!navigator.share) {
+      shareBtn.classList.add('no-share-api');
+    }
+
+    shareBtn.addEventListener('click', async () => {
+      const title = document.querySelector('.study-header h1')?.textContent || 'Bible Study';
+      const text = gatherStudyWithNotes();
+
+      if (navigator.share) {
+        try {
+          await navigator.share({ title: 'My Notes — ' + title, text: text });
+        } catch(e) {}
+      }
+    });
+
+    // ── Text-to-Speech for Scripture passages ──
+    let currentUtterance = null;
+    let currentBtn = null;
+
+    function stopSpeaking() {
+      speechSynthesis.cancel();
+      if (currentBtn) {
+        currentBtn.classList.remove('playing');
+        currentBtn.innerHTML = '&#9654;';
+      }
+      currentUtterance = null;
+      currentBtn = null;
+    }
+
+    document.querySelectorAll('.listen-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const blockquote = btn.closest('blockquote');
+        const textEl = blockquote.querySelector('.scripture-text');
+        if (!textEl) return;
+
+        if (currentBtn === btn) {
+          stopSpeaking();
+          return;
+        }
+
+        stopSpeaking();
+
+        const text = textEl.textContent.trim();
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.rate = 0.9;
+        utterance.pitch = 1;
+
+        btn.classList.add('playing');
+        btn.innerHTML = '&#9724;';
+        currentBtn = btn;
+        currentUtterance = utterance;
+
+        utterance.onend = () => {
+          btn.classList.remove('playing');
+          btn.innerHTML = '&#9654;';
+          currentBtn = null;
+          currentUtterance = null;
+        };
+
+        utterance.onerror = () => {
+          btn.classList.remove('playing');
+          btn.innerHTML = '&#9654;';
+          currentBtn = null;
+          currentUtterance = null;
+        };
+
+        speechSynthesis.speak(utterance);
+      });
+    });
+
+    if (!('speechSynthesis' in window)) {
+      document.querySelectorAll('.listen-btn').forEach(btn => {
+        btn.style.display = 'none';
+      });
+    }
+  </script>
+
+</body>
+</html>
